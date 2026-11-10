@@ -89,10 +89,11 @@
       var inner = a.url
         ? '<a class="row-link" href="' + esc(a.url) + '" target="_blank" rel="noopener" style="border:none"><span class="row-title">' + text + "</span></a>"
         : '<span class="row-title">' + text + "</span>";
+      var detail = a.detail ? '<span class="row-sub">' + esc(a.detail) + "</span>" : "";
       return (
         '<div class="row reveal">' +
           '<span class="meta">[<span class="meta-val">' + meta + "</span>]</span>" +
-          '<div class="row-main">' + inner + "</div>" +
+          '<div class="row-main">' + inner + detail + "</div>" +
         "</div>"
       );
     }).join("");

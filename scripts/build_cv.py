@@ -72,9 +72,11 @@ PROFILE = (
     "patient safety, quality assurance, workflow optimization and equitable access to diagnostic "
     "imaging in resource-limited settings. Author of 13 journal and conference/workshop papers, "
     "including MICCAI satellite-workshop and Springer LNCS contributions; recipient of MICCAI Health "
-    "Equity, Open Data and Travel awards. Currently pursuing a PhD in Medical Radiography at Bayero "
-    "University Kano on AI-assisted workflow enhancement in MRI, with emphasis on safety and image "
-    "quality optimization."
+    "Equity, Open Data and Travel awards. Project Lead of the MICCAI 2026 Health Equity project for "
+    "Africa, developing AI tools for pre-MRI safety screening, image quality optimization and digital "
+    "data recording in Nigerian imaging centres. Currently pursuing a PhD in Medical Radiography at "
+    "Bayero University Kano on AI-assisted workflow enhancement in MRI, with emphasis on safety and "
+    "image quality optimization."
 )
 
 EDUCATION = [
@@ -287,12 +289,22 @@ class CV:
             p.paragraph_format.keep_with_next = i < len(bullets) - 1
             run(p, b, size=10)
 
-    def simple_dated(self, text, date):
+    def simple_dated(self, text, date, url=None, detail=None):
         p = self.doc.add_paragraph()
         spacing(p, before=1)
         p.paragraph_format.tab_stops.add_tab_stop(self.text_width, WD_TAB_ALIGNMENT.RIGHT)
-        run(p, text)
+        p.paragraph_format.keep_with_next = bool(detail)
+        if url:
+            add_hyperlink(p, text, url, color="000000")
+        else:
+            run(p, text)
         run(p, "\t" + date, color=MUTED, size=10)
+        if detail:
+            p = self.doc.add_paragraph()
+            spacing(p, after=2)
+            p.paragraph_format.left_indent = Cm(0.4)
+            p.paragraph_format.right_indent = Cm(1.5)
+            run(p, detail, italic=True, size=9.5, color=MUTED)
 
     def para(self, text, size=10.5, after=0):
         p = self.doc.add_paragraph()
@@ -389,7 +401,7 @@ def build() -> None:
     cv.section("Awards and Grants")
     awards = [a for a in acts if a.get("year")]
     for a in awards:
-        cv.simple_dated(a["text"], str(a["year"]))
+        cv.simple_dated(a["text"], str(a["year"]), a.get("url"), a.get("detail"))
 
     cv.section("Professional Development")
     for text, date in DEVELOPMENT:
