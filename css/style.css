@@ -69,7 +69,7 @@ a:hover { border-bottom: 2px solid var(--accent); }
 .site-nav a {
   display: flex;
   align-items: center;
-  padding: 0 0.85rem;
+  padding: 0 0.7rem;
   font-size: 0.78rem;
   font-weight: 400;
   letter-spacing: 0.06em;
@@ -236,7 +236,22 @@ a.row-link:hover .row-title { color: var(--accent); }
 .row-bullets li { margin-bottom: 0.2rem; }
 
 .pub-row { align-items: baseline; }
-.pub-venue { font-size: 0.85rem; color: var(--muted); }
+.pub-venue { display: block; font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+.pub-venue em { font-style: italic; }
+.status-tag {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 0 0.4rem 0 0.4rem;
+  padding: 0 0.4rem;
+  margin-right: 0.3rem;
+  vertical-align: 0.08em;
+}
+.list-note { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; max-width: 44rem; }
 .ext {
   font-size: 0.9rem;
   margin-left: 0.5rem;

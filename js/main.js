@@ -19,17 +19,51 @@
   var pubCount = document.getElementById("pub-count");
   if (pubCount) pubCount.textContent = pubs.length ? "(" + pubs.length + ")" : "";
 
+  var citeLine = function (venue, details, note) {
+    var parts = [];
+    if (venue) parts.push("<em>" + esc(venue) + "</em>" + (details ? ", " + esc(details) : ""));
+    if (note) parts.push(esc(note));
+    return parts.length ? '<span class="pub-venue">' + parts.join(" &middot; ") + "</span>" : "";
+  };
+
+  var extLink = function (url, label) {
+    return url
+      ? ' <a class="ext" href="' + esc(url) + '" target="_blank" rel="noopener" aria-label="' + label + '"></a>'
+      : "";
+  };
+
   if (pubList) {
     pubList.innerHTML = pubs.map(function (p) {
       var meta = p.year ? esc(p.year) : "&mdash;";
-      var venue = p.venue ? ' <span class="pub-venue">[' + esc(p.venue) + "]</span>" : "";
-      var link = p.url
-        ? ' <a class="ext" href="' + esc(p.url) + '" target="_blank" rel="noopener" aria-label="Open publication"></a>'
-        : "";
       return (
         '<div class="row pub-row reveal">' +
           '<span class="meta">[<span class="meta-val">' + meta + "</span>]</span>" +
-          '<div class="row-main"><span class="row-title">' + esc(p.title) + "</span>" + venue + link + "</div>" +
+          '<div class="row-main"><span class="row-title">' + esc(p.title) +
+            extLink(p.url, "Open publication") + "</span>" +
+            citeLine(p.venue, p.details, p.note) + "</div>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  /* ---------- Conference abstracts & presentations ---------- */
+  var talks = (window.PRESENTATIONS || []).slice().sort(function (a, b) {
+    return (b.year || 0) - (a.year || 0);
+  });
+  var talkList = document.getElementById("talk-list");
+  var talkCount = document.getElementById("talk-count");
+  if (talkCount) talkCount.textContent = talks.length ? "(" + talks.length + ")" : "";
+  if (talkList) {
+    talkList.innerHTML = talks.map(function (t) {
+      var meta = t.year ? esc(t.year) : "&mdash;";
+      var status = t.status ? '<span class="status-tag">' + esc(t.status) + "</span> " : "";
+      return (
+        '<div class="row pub-row reveal">' +
+          '<span class="meta">[<span class="meta-val">' + meta + "</span>]</span>" +
+          '<div class="row-main"><span class="row-title">' + esc(t.title) +
+            extLink(t.url, "Open abstract") + "</span>" +
+            '<span class="pub-venue">' + status + esc(t.event || "") +
+            (t.note ? " &middot; " + esc(t.note) : "") + "</span></div>" +
         "</div>"
       );
     }).join("");

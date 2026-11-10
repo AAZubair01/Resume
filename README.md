@@ -13,11 +13,15 @@ updating the site never requires touching HTML.
 ├── js/main.js                  # renders data files + scroll behavior
 ├── data/
 │   ├── publications.js         # ← EDIT THIS to add a publication
-│   └── activities.js           # ← EDIT THIS to add an award/activity
+│   ├── presentations.js        # ← EDIT THIS to add a conference abstract/talk
+│   └── activities.js           # ← EDIT THIS to add an award/membership
 ├── assets/
 │   ├── headshot.png            # profile photo
-│   └── Abdulrazaq-Zubair-CV.docx
-├── scripts/fetch_scholar.py    # Google Scholar sync
+│   ├── Abdulrazaq-Zubair-CV.docx
+│   └── Abdulrazaq-Zubair-CV.pdf  # the "Download CV" file
+├── scripts/
+│   ├── build_cv.py             # regenerates the CV .docx/.pdf
+│   └── fetch_scholar.py        # Google Scholar sync
 └── .github/workflows/update-publications.yml
 ```
 
@@ -76,5 +80,16 @@ To use a different Scholar profile, change `SCHOLAR_AUTHOR_ID` at the top of
 
 ## 4. Update the CV download or photo
 
-Replace `assets/Abdulrazaq-Zubair-CV.docx` or `assets/headshot.png` with a
-new file of the **same name**, commit, and push.
+The downloadable CV is generated from the same data files as the site, so
+publications, presentations and awards stay in sync. Profile, education and
+experience text lives in the `CONTENT` block at the top of
+`scripts/build_cv.py`. After editing, rebuild (Windows with Microsoft Word
+for the PDF export):
+
+```bash
+pip install python-docx pywin32
+python scripts/build_cv.py
+```
+
+To replace the photo, swap `assets/headshot.png` for a new file of the
+**same name**, commit, and push.
